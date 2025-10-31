@@ -82,3 +82,11 @@ color: red;
     width: 150px;
     height: 50px;
 }
+.score{
+    position: absolute;
+left: 10%;
+background-color: red;
+height: 50px;
+ display: none;
+
+}
