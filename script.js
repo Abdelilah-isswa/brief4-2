@@ -33,7 +33,7 @@ if (!started) {
     timer.innerHTML=`<p>time :${time}</p>`;
     console.log(time)
      time++
-    if (time>3) {
+    if (time>60) {
          restart.style.display = 'inline';
          typingspeed.style.display ='inline';
         clearInterval(timerid)
@@ -49,7 +49,6 @@ if (!started) {
 }
 
 x++;
-   
 
    
 
