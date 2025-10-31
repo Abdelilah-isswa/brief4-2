@@ -1,0 +1,27 @@
+body{
+    font-size: 100px;
+    height: 100vh;
+}
+input{
+    height: 100px;
+    width: 300px;
+ font-size: 50px;
+
+}
+.meme{
+color: rgb(3, 255, 3);
+}
+.notmeme{
+color: red;
+}
+.fadout{
+    opacity: 0;
+}
+.don{
+    height: 80%;
+    width: 80%;
+    background-color: red;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+}
