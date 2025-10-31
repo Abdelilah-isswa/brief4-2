@@ -1,97 +1,98 @@
- let worldlist ='leorem sdfedfzezf'
-let typingspeed = document.querySelector("#typingspeed")
+let worldlist = 'leorem sdfedfzezf';
+let typingspeed = document.querySelector("#typingspeed");
 
 let input = document.querySelector('#input');
-let world = document.querySelector("#word")
+let world = document.querySelector("#word");
 let elementfolt = document.getElementById("folt");
 let timer = document.getElementById("timer");
-let index =0
-let typed =0
-let folt =0
-let plus =0
-let time =0
-let x =0;
-let started= false;
-let taux_de_précision= 0;
+let score = document.getElementsByClassName("score")[0];
+let restart = document.querySelector(".restartbtn");
+let yourscore = document.getElementsByClassName("yourscore")[0];
+
+let folt = 0; // errors
+let plus = 0; // score
+let time = 0;
+let started = false;
 let timerid;
-let score = document.getElementsByClassName("score")[0]
-let restart = document.querySelector(".restartbtn")
- restart.style.display = 'none';
- typingspeed.style.display ='none';
- let yourscore=document.getElementsByClassName("yourscore")[0];
 
- input.addEventListener("input",function(
-){
-   
-console.log(x)
+// Track previous typed value
+let prevTyped = '';
+let scoredFlags = new Array(worldlist.length).fill(false); // for score tracking
 
+restart.style.display = 'none';
+typingspeed.style.display = 'none';
 
-typed++;
-if (!started) {
-    started= true
- timerid = setInterval(()=>{
-    timer.innerHTML=`<p>time :${time}</p>`;
-    console.log(time)
-     time++
-    if (time>60) {
-         restart.style.display = 'inline';
-         typingspeed.style.display ='inline';
-        clearInterval(timerid)
-        input.desabled = true;
-       timer.innerHTML=`<p>time done</p>`;
-       world.classList.add("fadout")
-       score.classList.add("don")
-      
-             typingspeed.innerHTML=`<p>speed :${time}</p>`;
-    }
-   
-},1000);
+function startgame() {
+  input.classList.remove('notmeme', 'meme');
+  input.value = '';
+  time = 0;
+  timer.innerHTML = `<p>Time : ${time}</p>`;
+  score.classList.remove("don");
+  folt = 0;
+  plus = 0;
+  prevTyped = '';
+  scoredFlags.fill(false);
+  elementfolt.innerHTML = `<p>Error : ${folt}</p>`;
+  started = false;
+  clearInterval(timerid);
+  restart.style.display = 'none';
+  typingspeed.style.display = 'none';
+  yourscore.innerHTML = `<p>Score : ${plus}</p>`;
+  input.disabled = false;
 }
 
-x++;
+input.addEventListener("input", function () {
+  const typed = input.value;
 
-   
+  // Start timer once typing begins
+  if (!started) {
+    started = true;
+    timerid = setInterval(() => {
+      timer.innerHTML = `<p>Time : ${time}</p>`;
+      time++;
+      if (time > 30) {
+        restart.style.display = 'inline';
+        typingspeed.style.display = 'inline';
+        clearInterval(timerid);
+        input.disabled = true;
+        timer.innerHTML = `<p>Time done</p>`;
+        world.classList.add("fadeout");
+        score.classList.add("done");
+        typingspeed.innerHTML = `<p>Speed : ${plus}</p>`;
+      }
+    }, 1000);
+  }
 
-     for (index; index < worldlist.length; index++) {
-        //  console.log(input.value.length)
-        if (input.value.length<typed) {
-            
-            typed = input.value.length
-            console.log("you deleted")
-            input.classList.remove("notmeme")
-    input.classList.add("meme")
-             console.log(index)
-            index = index -2;
-            console.log(index)
-        }else{
+  // Detect if user deleted something
+  const deleted = typed.length < prevTyped.length;
 
-              console.log(input.value.slice(-1))
-  console.log(worldlist[index])
-         
-   if (input.value.slice(-1) === worldlist[index]) {
-    input.classList.remove("notmeme")
-    input.classList.add("meme")
-    plus = plus+1;
-    yourscore.innerHTML=`<p>Score :${plus}</p>`
-         console.log("meme")
-        //  console.log(index)
-     }else{
-        console.log("not the sme")
-          input.classList.add("notmeme")
-          input.classList.remove("meme")
-          folt =folt+1;
-          elementfolt.innerHTML=`<p>error :${folt}</p>`;
+  if (!deleted) {
+    // New character typed
+    let i = typed.length - 1;
+    const typedChar = typed[i];
+    const correctChar = worldlist[i];
 
-     }
-    
-        }
-    index++;      
-   break; 
+    if (typedChar === undefined) return;
+
+    // Correct letter (count once per position)
+    if (typedChar === correctChar && !scoredFlags[i]) {
+      scoredFlags[i] = true;
+      plus++;
+    } 
+    // Wrong letter → always increment error when typing wrong (even if previous wrong)
+    else if (typedChar !== correctChar) {
+      folt++;
     }
-//    console.log(index)
- 
+  }
 
+  // Update display
+  yourscore.innerHTML = `<p>Score : ${plus}</p>`;
+  elementfolt.innerHTML = `<p>Error : ${folt}</p>`;
 
-    }
+  prevTyped = typed;
+});
 
-)
+// Restart button
+restart.addEventListener("click", function () {
+  startgame();
+});
