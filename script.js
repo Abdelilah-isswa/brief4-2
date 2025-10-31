@@ -67,7 +67,7 @@ input.addEventListener("input", function () {
         timerid = setInterval(() => {
             timer.innerHTML = `<p>Time : ${time}</p>`;
             time++;
-            if (time > 10) {
+            if (time > 60) {
          restart.style.display = 'inline';
          typingspeed.style.display = 'inline';
                 clearInterval(timerid);
