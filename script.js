@@ -66,7 +66,7 @@ input.addEventListener("input", function () {
                 restart.style.display = 'inline';
                 typingspeed.style.display = 'inline';
                 clearInterval(timerid);
-                input.disabled = true;
+               // input.disabled = true;
                 timer.innerHTML = `<p>Time done</p>`;
                 score.classList.add("done");
                 typingspeed.innerHTML = `<p>Speed : ${plus}</p>`;
